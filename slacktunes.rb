@@ -47,6 +47,8 @@ token_users.each do |token, user|
     track.gsub!(')','%5D')
     track.gsub!('%0A','')
     track = track[0..99]
+    track.gsub!(/.{3}$/,'...') if track.length == 100
+    track.gsub!(/%.$/,'')
     curl = "curl -s -XPOST 'https://slack.com/api/users.profile.set?token=#{token}&profile=%7B%22status_emoji%22%3A%22#{status_emoji}%22%2C%22status_text%22%3A%22#{track}%22%7D'"
     `#{curl}`
   end
