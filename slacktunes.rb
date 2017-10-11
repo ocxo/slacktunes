@@ -8,12 +8,16 @@ Dotenv.load
 
 def get_track
   %x{ osascript <<APPLESCRIPT
-    tell application "iTunes"
-      set track_artist to the artist of the current track
-      set track_name to the name of the current track
-      set track_display to "Listening to " & track_artist & ": " & track_name
-    end tell
-    return track_display
+    if application "iTunes" is running then
+      tell application "iTunes"
+        set track_artist to the artist of the current track
+        set track_name to the name of the current track
+        set track_display to "Listening to " & track_artist & ": " & track_name
+      end tell
+      return track_display
+    else
+      return ""
+    end if
   APPLESCRIPT }
 end
 
