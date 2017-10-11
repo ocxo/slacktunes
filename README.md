@@ -1,6 +1,6 @@
 # slacktunes
 
-Set your Slack status to the current iTunes track
+Set your Slack status to the current iTunes track (when you're set to active on Slack)
 
 ## How?
 
