@@ -10,9 +10,13 @@ def get_track
   %x{ osascript <<APPLESCRIPT
     if application "iTunes" is running then
       tell application "iTunes"
-        set track_artist to the artist of the current track
-        set track_name to the name of the current track
-        set track_display to "Listening to " & track_artist & ": " & track_name
+        if player state is paused
+          return ""
+        else
+          set track_artist to the artist of the current track
+          set track_name to the name of the current track
+          set track_display to "Listening to " & track_artist & ": " & track_name
+        end if
       end tell
       return track_display
     else
@@ -21,7 +25,9 @@ def get_track
   APPLESCRIPT }
 end
 
-status_emoji = URI::encode(":headphones:")
+track = URI::encode(get_track)
+track.gsub!('%0A','')
+status_emoji = ":headphones:" unless track == ""
 
 tokens = ENV['SLACK_TOKENS'].split(',')
 users = ENV['SLACK_USERS'].split(',')
@@ -36,7 +42,6 @@ token_users.each do |token, user|
   status_text = JSON.parse(profile)['profile']['status_text'] || ''
 
   if presence == 'active' && status_text && (status_text.include?("Listening to") || status_text.empty?)
-    track = URI::encode(get_track)
     track.gsub!("'",'%27')
     track.gsub!('?','%3F')
     track.gsub!('+','%2B')
