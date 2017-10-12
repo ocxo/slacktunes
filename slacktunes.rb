@@ -41,10 +41,6 @@ token_users.each do |token, user|
     track.gsub!('?','%3F')
     track.gsub!('+','%2B')
     track.gsub!('&','%26')
-    track.gsub!('[','%5B')
-    track.gsub!(']','%5D')
-    track.gsub!('(','%5B')
-    track.gsub!(')','%5D')
     track.gsub!('%0A','')
     track = track[0..99]
     track.gsub!(/.{3}$/,'...') if track.length == 100
